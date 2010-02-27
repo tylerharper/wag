@@ -1,0 +1,24 @@
+#!/usr/bin/env python
+import feedparser
+import sys
+from args import options
+from templates import get_rendered_string, TemplateNotFound
+
+d = feedparser.parse(options['url'])
+if options['show_keys']:
+    print 'Example'
+    for k in d.entries[0]:
+        print '%s: %s' % (k, d.entries[0][k])
+    sys.exit()
+
+d.entries.reverse()
+
+try:
+    print get_rendered_string(options['template'], d.entries[:options['lines']])
+except TemplateNotFound:
+    print "%s does not appear to be a valid template in your template path" % options['template']
+    sys.exit(1)
+except AttributeError:
+    print "Either invalid url or invalid name"
+    sys.exit(1)
+
