@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import feedparser
 import sys
-from args import options
+from args import options, config_file
 from templates import get_rendered_string, TemplateNotFound
 
 d = feedparser.parse(options['url'])
@@ -9,6 +9,10 @@ if options['show_keys']:
     print 'Example'
     for k in d.entries[0]:
         print '%s: %s' % (k, d.entries[0][k])
+    sys.exit()
+if options['list']:
+    for line in config_file.config_dict.keys():
+        print line
     sys.exit()
 
 d.entries.reverse()

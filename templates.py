@@ -2,7 +2,7 @@ from jinja2 import Environment, FileSystemLoader
 from jinja2.exceptions import TemplateNotFound
 import os
 
-template_path = os.environ['HOME'] + '/.wag'
+template_path = os.environ['HOME'] + '/.wag/templates'
 jinja_env = Environment(loader=FileSystemLoader(template_path))
 
 def get_rendered_string(template_name, entries):
