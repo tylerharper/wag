@@ -1,12 +1,5 @@
-- add n,f,F commands
-- add a .rss file that is like a hosts file:
-  <name> <rss address>
-  
-  then run tail-rss <name> -n0 -F
-  and it would run the rss address
+- add f command
 
-run test cases where template doesn't exist
-run test cases where url doesn't exist
 html2text for those ugly atom feeds, or a deeper parser for example reddit feed
   - maybe jinja templates
 
