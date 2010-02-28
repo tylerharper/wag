@@ -3,11 +3,12 @@ import os
 import config
 
 default_config = os.environ['HOME'] + '/.wag/feeds'
+default_template = os.path.abspath('default_rss_template')
 parser = argparse.ArgumentParser(prog='wag', description='tail your rss feeds')
 
 parser.add_argument('-n', '--lines', type=int, default=None,
                     help="The number of entries")
-parser.add_argument('-t', '--template', 
+parser.add_argument('-t', '--template', default=default_template,
                     help='the template to render. REMINDER: must be in template_path')
 parser.add_argument('-c', '--config', default=default_config,
                     help="Use a new config file. (default: %s)" % default_config)
