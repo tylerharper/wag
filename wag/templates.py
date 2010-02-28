@@ -3,7 +3,9 @@ from jinja2.exceptions import TemplateNotFound
 import os
 
 template_path = os.environ['HOME'] + '/.wag/templates'
-jinja_env = Environment(loader=FileSystemLoader([template_path,'.']), trim_blocks=True)
+default_template_path = os.path.dirname(os.path.abspath(__file__))
+
+jinja_env = Environment(loader=FileSystemLoader(['.',template_path, default_template_path]), trim_blocks=True)
 
 def render_single_entry(template_name, entry):
     template = jinja_env.get_template(template_name)

@@ -3,7 +3,8 @@ import os
 import config
 
 default_config = os.environ['HOME'] + '/.wag/feeds'
-default_template = os.path.abspath(__file__)
+default_template = 'default_rss_template'
+
 parser = argparse.ArgumentParser(prog='wag', description='tail your rss feeds')
 
 parser.add_argument('-n', '--lines', type=int, default=None,
