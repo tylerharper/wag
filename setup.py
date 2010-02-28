@@ -7,7 +7,7 @@ setup(
     name='wag',
     version='0.1',
     packages= find_packages(),
-    install_requirements = [
+    install_requires = [
         'Jinja2>=2',
         'argparse>=1',
         'feedparser>=4.1'
