@@ -17,7 +17,7 @@ template - the file name for the jinja2 template you want have rendered by defau
             ( you can override this will --template if you want)
            Also must be in your template_path (currently ~/.wag/templates)
 
-If you need to figure out the keys to generate that template just run -k and
+If you need to figure out the keys to generate that template just run `wag <url|name> -k` and
 it will spit out the keys and example data assocaited with them.
 
-
+For other help please run `wag -h`
