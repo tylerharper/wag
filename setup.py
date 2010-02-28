@@ -14,7 +14,7 @@ setup(
     ],
     entry_points = {
         'console_scripts': [
-            'wag = wag.wag'
+            'wag = wag.wag:main'
         ],
     }
 )
