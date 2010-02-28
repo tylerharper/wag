@@ -1,7 +1,5 @@
-- add f command
-
 html2text for those ugly atom feeds, or a deeper parser for example reddit feed
-  - maybe jinja templates
+  - maybe jinja templates/template-tags
 
 a better setup.py that creates dirs for us
 

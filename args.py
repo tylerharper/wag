@@ -10,8 +10,10 @@ parser.add_argument('-n', '--lines', type=int, default=None,
 parser.add_argument('-t', '--template', 
                     help='the template to render. REMINDER: must be in template_path')
 parser.add_argument('-c', '--config', default=default_config,
-                    help="Use a new config file. (default: %s" % default_config)
+                    help="Use a new config file. (default: %s)" % default_config)
 parser.add_argument('-f', '--follow', action='store_true')
+parser.add_argument('-s', '--sleep-interval', type=int, default=300, 
+                    help='with -f, sleep for approximately N seconds (default 1.0) between iterations')
 parser.add_argument('-k', '--keys', action='store_true',
                     help="prints out the valid keys for that url/name")
 
@@ -39,3 +41,4 @@ options['follow'] = args.follow
 options['lines'] = args.lines
 options['show_keys'] = args.keys
 options['list'] = args.list
+options['sleep-interval'] = args.sleep_interval
