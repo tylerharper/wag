@@ -9,7 +9,7 @@ parser = argparse.ArgumentParser(prog='wag', description='tail your rss feeds')
 
 parser.add_argument('-n', '--lines', type=int, default=None,
                     help="The number of entries")
-parser.add_argument('-t', '--template', default=default_template,
+parser.add_argument('-t', '--template', default=None,
                     help='the template to render. REMINDER: must be in template_path')
 parser.add_argument('-c', '--config', default=default_config,
                     help="Use a new config file. (default: %s)" % default_config)
@@ -36,6 +36,8 @@ except KeyError:
 if args.template:
     config.template = args.template
 
+if config.template == None:
+    config.template = default_template
 options = {}
 options['url'] = config.url
 options['template'] = config.template
