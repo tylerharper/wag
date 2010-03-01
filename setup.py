@@ -17,5 +17,6 @@ setup(
             'wag = wag.wag:main'
         ],
     },
-    include_package_date = True
+    include_package_date = True,
+    zip_safe=False
 )
