@@ -1,3 +1,2 @@
-include setup.py README.markdown MANIFEST.in todo 
+include setup.py README.markdown MANIFEST.in todo wag/templates/default_rss_template
 recursive-include wag/templates *
-global_exclude *~
