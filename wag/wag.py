@@ -57,3 +57,7 @@ def main():
 
         except KeyboardInterrupt:
             sys.exit() 
+        
+        except IndexError:
+            print "%s has no entries or is an invalid url" % options['url']
+            sys.exit(1)
