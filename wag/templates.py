@@ -1,9 +1,12 @@
 from jinja2 import Environment, FileSystemLoader
 from jinja2.exceptions import TemplateNotFound
+from pkg_resources import resource_string
 import os
 
 template_path = os.environ['HOME'] + '/.wag/templates'
 default_template_path = os.path.dirname(os.path.abspath(__file__))
+
+print default_template_path
 
 jinja_env = Environment(loader=FileSystemLoader(['.',template_path, default_template_path]), trim_blocks=True)
 

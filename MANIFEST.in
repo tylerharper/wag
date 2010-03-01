@@ -1,0 +1,1 @@
+include setup.py README.markdown MANIFEST.in todo wag/default_rss_template

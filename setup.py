@@ -4,8 +4,8 @@ use_setuptools()
 from setuptools import setup, find_packages
 
 setup(
-    name='wag',
-    version='0.1',
+    name = 'wag',
+    version = '0.1',
     packages= find_packages(),
     install_requires = [
         'Jinja2>=2',
@@ -16,5 +16,6 @@ setup(
         'console_scripts': [
             'wag = wag.wag:main'
         ],
-    }
+    },
+    include_package_date = True
 )
