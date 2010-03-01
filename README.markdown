@@ -12,10 +12,12 @@ Config File layout:
     name url template
 
 name - the name you want to call from the command line
+
 url - the rss/atom feed url
+
 template - the file name for the jinja2 template you want have rendered by default. 
-            ( you can override this will --template if you want)
-           Also must be in your template_path (currently ~/.wag/templates)
+(you can override this will --template if you want)
+Also must be in your template_path (currently ~/.wag/templates)
 
 If you need to figure out the keys to generate that template just run `wag <url|name> -k` and
 it will spit out the keys and example data assocaited with them.

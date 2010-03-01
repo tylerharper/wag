@@ -6,8 +6,6 @@ import os
 template_path = os.environ['HOME'] + '/.wag/templates'
 default_template_path = os.path.dirname(os.path.abspath(__file__)) + '/templates'
 
-print default_template_path
-
 jinja_env = Environment(loader=FileSystemLoader(['.',template_path, default_template_path]), trim_blocks=True)
 
 def render_single_entry(template_name, entry):
