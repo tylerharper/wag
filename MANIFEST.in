@@ -1,2 +1,3 @@
 include setup.py README.markdown MANIFEST.in todo 
 recursive-include wag/templates *
+global_exclude *~
