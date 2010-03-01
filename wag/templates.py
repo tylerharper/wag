@@ -4,7 +4,7 @@ from pkg_resources import resource_string
 import os
 
 template_path = os.environ['HOME'] + '/.wag/templates'
-default_template_path = os.path.dirname(os.path.abspath(__file__))
+default_template_path = os.path.dirname(os.path.abspath(__file__)) + '/templates'
 
 print default_template_path
 
