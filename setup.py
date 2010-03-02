@@ -4,19 +4,20 @@ use_setuptools()
 from setuptools import setup, find_packages
 
 setup(
-    name = 'wag',
-    version = '0.1',
+    name='wag',
+    version='0.1',
+    description="Tail your rss and atom feeds",
     packages= find_packages(),
-    install_requires = [
+    install_requires=[
         'Jinja2>=2',
         'argparse>=1',
         'feedparser>=4.1'
     ],
-    entry_points = {
+    entry_points={
         'console_scripts': [
             'wag = wag.wag:main'
         ],
     },
-    include_package_date = True,
+    include_package_data=True,
     zip_safe=False
 )
