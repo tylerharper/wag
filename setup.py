@@ -7,6 +7,11 @@ setup(
     name='wag',
     version='0.1',
     description="Tail your rss and atom feeds",
+    long_description=open("README.markdown").read(),
+    author="Tyler Harper",
+    email="tyler@cowboycoding.org",
+    url='http://github.com/knobe/wag',
+    liscense='BSD',
     packages= find_packages(),
     install_requires=[
         'Jinja2>=2',
@@ -18,8 +23,17 @@ setup(
             'wag = wag.wag:main'
         ],
     },
+    zip_safe=False,
     include_package_data=True,
     package_data={
     'wag':['templates/*'],
-    }
+    },
+    classifiers=[
+        'Development Status :: 3 - Alpha',
+        'Environment :: Console',
+        'Intended Audience :: Developers',
+        'Operating System :: Unix',
+        'License :: OSI Approved :: BSD License',
+        'Programming Language :: Python',
+   ]
 )
