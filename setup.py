@@ -1,6 +1,3 @@
-from distribute_setup import use_setuptools
-use_setuptools()
-
 from setuptools import setup, find_packages
 
 setup(
@@ -9,14 +6,15 @@ setup(
     description="Tail your rss and atom feeds",
     long_description=open("README.markdown").read(),
     author="Tyler Harper",
-    email="tyler@cowboycoding.org",
+    author_email="tyler@cowboycoding.org",
     url='http://github.com/knobe/wag',
-    liscense='BSD',
+    license='BSD',
     packages= find_packages(),
     install_requires=[
         'Jinja2>=2',
         'argparse>=1',
-        'feedparser>=4.1'
+        'feedparser>=4.1',
+        'distribute',
     ],
     entry_points={
         'console_scripts': [
@@ -26,13 +24,14 @@ setup(
     zip_safe=False,
     include_package_data=True,
     package_data={
+    '':['*.py'],
     'wag':['templates/*'],
     },
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Environment :: Console',
         'Intended Audience :: Developers',
-        'Operating System :: Unix',
+        'Operating System :: POSIX',
         'License :: OSI Approved :: BSD License',
         'Programming Language :: Python',
    ]
