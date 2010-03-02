@@ -4,7 +4,7 @@ setup(
     name='wag',
     version='0.1',
     description="Tail your rss and atom feeds",
-    long_description=open("README.markdown").read(),
+    long_description="Make your tail happy, wag it!",
     author="Tyler Harper",
     author_email="tyler@cowboycoding.org",
     url='http://github.com/knobe/wag',
