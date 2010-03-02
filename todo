@@ -1,3 +1,5 @@
+-Write Tests
+
 html2text for those ugly atom feeds, or a deeper parser for example reddit feed
   - maybe jinja templates/template-tags
 
