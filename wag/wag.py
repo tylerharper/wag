@@ -18,9 +18,12 @@ def main():
         sys.exit()
 
     d.entries.reverse()
+    number_of_entries = len(d.entries)
+    if options['lines'] is None:
+        options['lines'] = number_of_entries
 
     try:
-        print get_rendered_string(options['template'], d.entries[:options['lines']])
+        print get_rendered_string(options['template'], d.entries[number_of_entries-options['lines']:])
     except TemplateNotFound:
         print "%s does not appear to be a valid template in your template path" % options['template']
         sys.exit(1)
