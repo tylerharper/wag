@@ -9,7 +9,7 @@ setup(
     author_email="tyler@cowboycoding.org",
     url='http://github.com/knobe/wag',
     license='BSD',
-    packages= find_packages(),
+    packages= find_packages(exclude=['distribute_setup']),
     install_requires=[
         'Jinja2>=2',
         'argparse>=1',
