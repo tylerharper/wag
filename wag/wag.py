@@ -4,6 +4,7 @@ import sys
 import time
 from args import options, config_file
 from templates import get_rendered_string, TemplateNotFound
+import filters
 
 def main():
     d = feedparser.parse(options['url'])
