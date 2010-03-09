@@ -23,21 +23,19 @@ parser.add_argument('-l', '--list', action='store_true', help="lists all the val
 parser.add_argument('name', metavar='name/url', default=None)
 
 args = parser.parse_args()
-try:
-    config_file = config.WagConfig(args.config)
-except config.NoConfigError:
-    config_file = {args.name: config.ConfigValue(url=args.name, template=None)}
+config_file = config.WagConfig(args.config)
 
 try:
     config = config_file[args.name]
-except KeyError:
+except config.NameNotInConfig:
     config = config.ConfigValue(url=args.name, template=None)
 
 if args.template:
     config.template = args.template
 
-if config.template == None:
+if hasattr(config, 'template') == False:
     config.template = default_template
+
 options = {}
 options['url'] = config.url
 options['template'] = config.template

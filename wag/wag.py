@@ -14,7 +14,7 @@ def main():
             print '%s: %s' % (k, d.entries[0][k])
         sys.exit()
     if options['list']:
-        for line in config_file.config_dict.keys():
+        for line in config_file.get_names():
             print line
         sys.exit()
 
