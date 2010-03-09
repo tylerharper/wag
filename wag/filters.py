@@ -1,39 +1,32 @@
 from templates import jinja_env
 from datetime import datetime, timedelta
+from feedparser import _parse_date
 import html2text
 
 def html_to_markdown(value, width=70):
     html2text.BODY_WIDTH = width
     return html2text.html2text(value)
 
-def relatize(value, feed_timezone=-8, time_format="%Y-%m-%dT%H:%M:%S-08:00"):
+def relatize(value):
     """
     
     Returns the relative time of each request.  Another feature stolen from
     github.
 
-    time_format - the format of your time.  everything should make sense
-                  except the -08:00.  The -08:00 is the time zone.  The
-                  timezone may put into its own variable at a later date.
-    
-    feed_time_zone - is the timezone of the feed
-
     How it works:
     
-        get the date from value and time_format
-        subtract current timezone to get utc time
-        
+        get the date from value - use _parse_date from feed parser
         get current utc time.
         compare current utc time and output relative time
         
     """
     
-    the_date = datetime.strptime(value, time_format)
-    utc_date = the_date - timedelta(hours=feed_timezone)
+    date_struct = _parse_date(value)[0:6]
+    the_date = datetime(*date_struct)
     
     now = datetime.utcnow()
 
-    time_difference = now - utc_date
+    time_difference = now - the_date
     
     if time_difference.days > 356:
         return 'about %d years ago' % (time_difference.days / 356)
