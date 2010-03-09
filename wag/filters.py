@@ -44,7 +44,7 @@ def relatize(value, feed_timezone=-8, time_format="%Y-%m-%dT%H:%M:%S-08:00"):
     elif time_difference.seconds > 7200:
         return 'about %d hours ago' % (time_difference.seconds / 3600)
     elif time_difference.seconds > 3600:
-        return 'about a hour ago'
+        return 'about an hour ago'
     elif time_difference.seconds > 120:
         return 'about %d minutes ago' % (time_difference.seconds / 60)
     elif time_difference.seconds > 60:
