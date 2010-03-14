@@ -14,6 +14,7 @@ default_template = 'default_rss_template'
 def get_feed(func):
     def its_a_front(args):
         entries = feedparser.parse(args.url).entries
+        entries.reverse()
         return func(args, entries)
         
     return its_a_front
