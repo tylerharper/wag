@@ -6,7 +6,7 @@ import os
 import ConfigParser
 from templates import get_rendered_string, TemplateNotFound
 import filters
-from wagparser import arg_function, run_parser, add_argument
+import wagparser
 
 default_config = os.environ['HOME'] + '/.wag/feeds'
 default_template = 'default_rss_template'
@@ -19,18 +19,33 @@ def get_feed(func):
         
     return its_a_front
         
-add_argument('-n', '--lines', type=int, default=None,
-                    help="The number of entries")
-add_argument('-t', '--template', default=None,
-                    help='the template to render. REMINDER: must be in template_path')
-add_argument('-c', '--config', default=default_config,
-                    help="Use a new config file. (default: %s)" % default_config)
-add_argument('-s', '--sleep-interval', type=int, default=300, 
-                    help='with -f, sleep for approximately N seconds (default 1.0) between iterations')
-add_argument('-v', '--verbose', action='store_true')
-add_argument('name', metavar='name/url', default=None)
+@get_feed
+def display_feed(args, entries):
+    """Read the feeds once """
+    number_of_entries = len(entries)
+    try:
+        print get_rendered_string(args.template, entries[number_of_entries-args.lines:])
+    except TemplateNotFound:
+        print "%s does not appear to be a valid template in your template path" % args.template
+        sys.exit(1)
+    except AttributeError:
+        print "Either invalid url or invalid name"
 
-@arg_function('-k', '--keys', help="prints out the valid keys for that url/name")
+wag_parser = wagparser.WagParser(display_feed, prog="wag", 
+                        description="tail rss/atom feeds")
+
+wag_parser.add_argument('-n', '--lines', type=int, default=None,
+                    help="The number of entries")
+wag_parser.add_argument('-t', '--template', default=None,
+                    help='the template to render. REMINDER: must be in template_path')
+wag_parser.add_argument('-c', '--config', default=default_config,
+                    help="Use a new config file. (default: %s)" % default_config)
+wag_parser.add_argument('-s', '--sleep-interval', type=int, default=300, 
+                    help='with -f, sleep for approximately N seconds (default 1.0) between iterations')
+wag_parser.add_argument('-v', '--verbose', action='store_true')
+wag_parser.add_argument('name', metavar='name/url', default=None)
+
+@wag_parser.arg_function('-k', '--keys', help="prints out the valid keys for that url/name")
 @get_feed
 def show_keys(args, entries):
 
@@ -44,7 +59,7 @@ def show_keys(args, entries):
 
     sys.exit()
     
-@arg_function('-l', '--list', help="lists all the valid names in your config file")
+@wag_parser.arg_function('-l', '--list', help="lists all the valid names in your config file")
 def list(args):
     config_file = ConfigParser.RawConfigParser()
     config_file.read(args.config)
@@ -52,7 +67,7 @@ def list(args):
         print "'" + section + "'"
     sys.exit()
 
-@arg_function('-f', '--follow')
+@wag_parser.arg_function('-f', '--follow')
 @get_feed
 def follow(args, entries):
     try:
@@ -87,17 +102,6 @@ def follow(args, entries):
         print "%s has no entries or is an invalid url" % args.url
         sys.exit(1)
 
-@get_feed
-def display_feed(args, entries):
-    """Read the feeds once """
-    number_of_entries = len(entries)
-    try:
-        print get_rendered_string(args.template, entries[number_of_entries-args.lines:])
-    except TemplateNotFound:
-        print "%s does not appear to be a valid template in your template path" % args.template
-        sys.exit(1)
-    except AttributeError:
-        print "Either invalid url or invalid name"
 
 @get_feed
 def fix_lines(args, entries):
@@ -131,6 +135,6 @@ def get_config(args):
 #        config.template = default_template
      
 def main():
-    result = run_parser(display_feed, [get_config, fix_lines])
+    result = wag_parser.run_parser([get_config, fix_lines])
     
 
