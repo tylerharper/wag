@@ -127,12 +127,6 @@ def get_config(args):
             args.template = default_template
     
     return args
-
-    # if fails
-        #args.template = default_template
-
-#    if hasattr(config, 'template') == False:
-#        config.template = default_template
      
 def main():
     result = wag_parser.run_parser([get_config, fix_lines])
