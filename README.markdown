@@ -1,7 +1,7 @@
 A Happy Tail
 ============
 
-A wagging a tail normally means something is happy, so why not make a cool rss feed reader that
+Wagging a tail normally means something is happy, so why not make a cool rss feed reader that
 works just like tail.
 
 You can call tail on two types of things, names and urls. A name is the alias
