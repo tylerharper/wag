@@ -23,6 +23,10 @@ def get_feed(func):
 def display_feed(args, entries):
     """Read the feeds once """
     number_of_entries = len(entries)
+    if number_of_entries == 0:
+        print "There are zero feeds for %s with url %s" % (args.name, args.url)
+        sys.exit(1)
+
     try:
         print get_rendered_string(args.template, entries[number_of_entries-args.lines:])
     except TemplateNotFound:
@@ -45,7 +49,9 @@ wag_parser.add_argument('-s', '--sleep-interval', type=int, default=300,
 wag_parser.add_argument('-v', '--verbose', action='store_true')
 wag_parser.add_argument('name', metavar='name/url', default=None)
 
-@wag_parser.arg_function('-k', '--keys', help="prints out the valid keys for that url/name")
+@wag_parser.arg_function('-k', '--keys', 
+                         help="prints out the valid keys for that url/name")
+                         
 @get_feed
 def show_keys(args, entries):
 
@@ -112,6 +118,7 @@ def fix_lines(args, entries):
     return args
 
 def get_config(args):
+
     config_file = ConfigParser.RawConfigParser()
     config_file.read(args.config)
 
@@ -123,7 +130,7 @@ def get_config(args):
     if args.template is None:
         try:
             args.template = config_file.get(args.name, 'template')
-        except ConfigParser.NoOptionError, ConfigParser.NoSectionError:
+        except (ConfigParser.NoOptionError, ConfigParser.NoSectionError):
             args.template = default_template
     
     return args
