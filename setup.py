@@ -22,8 +22,7 @@ setup(
         'License :: OSI Approved :: BSD License',
         'Programming Language :: Python',
     ],
-    install_requires=['Jinja2>=2', 'argparse>=1', 'feedparser>=4.1'],
-    extras_require={'html2markdown filter':'html2text>=2'},
+    install_requires=['Jinja2>=2', 'argparse>=1', 'feedparser>=4.1', 'html2text>=2'],
     entry_points={
         'console_scripts': ['wag = wag.wag:main'],
     },
