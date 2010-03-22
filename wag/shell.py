@@ -116,6 +116,8 @@ def fix_lines(args, entries):
     
     return args
 
+default_url = None
+feeds_object = ConfigParser.RawConfigParser({'url': default_url, 'template': template})
 def get_config(args):
 
     config_file = ConfigParser.RawConfigParser()

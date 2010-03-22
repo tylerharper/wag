@@ -6,24 +6,33 @@ import ConfigParser
 from templates import get_rendered_string, TemplateNotFound
 import filters
 
-
-def get_feed(func):
-    def its_a_front(args):
-        entries = feedparser.parse(args.url).entries
-        entries.reverse()
-        return func(args, entries)
-        
-    return its_a_front
-
+def multi_feed(func):
+"""Return either all of the feeds object or just the entries"""
+    def pseudo_object(self):
+        for name in self.args.names:
+            try:
+                url = self.feeds_object.get(name, 'url')
+                template = self.feeds_object.get(name, 'template')
+            except ConfigParser.NoSectionError:
+                url = name
+                
+            if self.args.template is None:
+                self.args.template = template
+             
+            feed = feedparser.parse(url).entries
+            feed.reverse()
+    
+            return func(self, feed)
+    return pseudo_object
+            
 class Wag(object):
     def __init__(self, args, feeds_object):
         self.args = args
         self.feeds_object = feeds_object
 
-    @multi_feed
     def display_feed(self, feed):
         """Takes a list of entries from config"""
-        number_of_entries = len(feed)
+        number_of_entries = len(entries)
         if number_of_entries == 0:
             print "There are zero feeds for %s with url %s" % (args.name, args.url)
             sys.exit(1)
@@ -36,8 +45,11 @@ class Wag(object):
         except AttributeError:
             print "Either invalid url or invalid name"
 
+    @multi_feed
+    def default(self, feed):
+        self.display(feed)
                          
-    @single_feed
+    @mutli_feed
     def show_keys(self, feed):
 
         for k in entries[0]:
@@ -59,6 +71,7 @@ class Wag(object):
 
     @multi_feed
     def follow(self, feed):
+        self.display_feed(feed)
         try:
             last_entry = entries[-1]
             while True:
