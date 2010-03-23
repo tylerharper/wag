@@ -68,11 +68,11 @@ class Wag(object):
     @multi_feed
     def show_keys(self, feed):
 
-        for k in feed[0]:
+        for k in feed.entries[0]:
             key_str = "'%s'" % str(k)
             #this was stolen from rson
             if self.args.verbose is True:
-                key_str += " => '%s'" % feed[0][k]
+                key_str += " => '%s'" % feed.entries[0][k]
         
             print key_str
 

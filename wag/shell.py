@@ -43,8 +43,8 @@ opt_map = {
 def main():
     for opt in opt_map.keys():
         if getattr(args, opt):
-            getattr(wag, opt)()
-        
+            opt_map[opt]()
+
     wag.default()
 
 if __name__ == '__main__':
