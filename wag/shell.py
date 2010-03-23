@@ -13,7 +13,7 @@ parser = argparse.ArgumentParser(prog="wag",
 
 parser.add_argument('-n', '--lines', type=int, default=None,
                     help="The number of entries")
-parser.add_argument('-t', '--template', default=None,
+parser.add_argument('-t', '--template', default=[], nargs='+',
                     help='the template to render. REMINDER: must be in template_path')
 parser.add_argument('-c', '--config', default=default_config,
                     help="Use a new config file. (default: %s)" % default_config)
@@ -31,6 +31,7 @@ parser.add_argument('-f', '--follow', action='store_true')
 
 feeds_object = ConfigParser.RawConfigParser({'url': default_url, 'template': default_template})
 args = parser.parse_args()
+feeds_object.read(args.config)
 wag = Wag(args, feeds_object)
      
 opt_map = {
