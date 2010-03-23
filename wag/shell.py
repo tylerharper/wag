@@ -25,7 +25,7 @@ parser.add_argument('names', metavar='name/url', default=None, nargs='*')
 parser.add_argument('-k', '--keys', action='store_true',
                          help="prints out the valid keys for that url/name")
                          
-parser.add_argument('-l', '--list', help="lists all the valid names in your config file")
+parser.add_argument('-l', '--list', action='store_true', help="lists all the valid names in your config file")
 parser.add_argument('-f', '--follow', action='store_true')
 
 

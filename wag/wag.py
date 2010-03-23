@@ -47,7 +47,7 @@ class Wag(object):
 
     def display_feed(self, feed):
         """Takes a list of entries from config"""
-        print '\n---------- %s ----------\n' % feed.feed['title']
+        print '\n---------- %s ----------\n' % feed.feed.get('title', self.args.url)
         number_of_entries = len(feed.entries)
         if number_of_entries == 0:
             print "There are zero feeds at %s" % (self.args.url)
