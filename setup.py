@@ -24,6 +24,6 @@ setup(
     ],
     install_requires=['Jinja2>=2', 'argparse>=1', 'feedparser>=4.1', 'html2text>=2'],
     entry_points={
-        'console_scripts': ['wag = wag.wag:main'],
+        'console_scripts': ['wag = wag.shell:main'],
     },
 )

@@ -7,7 +7,7 @@ from templates import get_rendered_string, TemplateNotFound
 import filters
 
 def multi_feed(func):
-"""Return either all of the feeds object or just the entries"""
+    """Return either all of the feeds object or just the entries"""
     def pseudo_object(self):
         for name in self.args.names:
             try:
@@ -15,12 +15,17 @@ def multi_feed(func):
                 template = self.feeds_object.get(name, 'template')
             except ConfigParser.NoSectionError:
                 url = name
+                template = None
                 
             if self.args.template is None:
                 self.args.template = template
              
             feed = feedparser.parse(url)
-            feed.entires.reverse()
+            feed.entries.reverse()
+            
+            #fixing line numbers
+            if self.args.lines is None:
+                self.args.lines = len(feed.entries)
     
             return func(self, feed)
     return pseudo_object
@@ -38,7 +43,7 @@ class Wag(object):
             sys.exit(1)
 
         try:
-            print get_rendered_string(self.args.template, feed[number_of_entries-self.args.lines:])
+            print get_rendered_string(self.args.template, feed.entries[number_of_entries-self.args.lines:])
         except TemplateNotFound:
             print "%s does not appear to be a valid template in your template path" % self.args.template
             sys.exit(1)
@@ -47,9 +52,9 @@ class Wag(object):
 
     @multi_feed
     def default(self, feed):
-        self.display(feed)
+        self.display_feed(feed)
                          
-    @mutli_feed
+    @multi_feed
     def show_keys(self, feed):
 
         for k in feed[0]:
@@ -63,9 +68,7 @@ class Wag(object):
         sys.exit()
     
     def list(self):
-        config_file = ConfigParser.RawConfigParser()
-        config_file.read(self.args.config)
-        for section in config_file.sections():
+        for section in self.feeds_object.sections():
             print "'" + section + "'"
         sys.exit()
 
