@@ -6,7 +6,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='wag',
-    version='0.2',
+    version='0.3',
     description="Tail your rss and atom feeds",
     long_description="Make your tail happy, wag it!",
     url='http://github.com/knobe/wag',
