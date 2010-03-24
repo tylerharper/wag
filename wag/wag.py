@@ -45,6 +45,7 @@ class Wag(object):
         self.args = args
         self.feeds_object = feeds_object
         self.last_update_time = {}
+        self.last_updated_feed = ''
 
     def display_feed(self, feed):
         """Takes a list of entries from config"""
@@ -84,6 +85,10 @@ class Wag(object):
             print "'" + section + "'"
         sys.exit()
 
+    
+    def add(self):
+        pass
+
     @multi_feed
     def _follow_first_display(self, feed):
         """
@@ -92,6 +97,7 @@ class Wag(object):
         """
         self.display_feed(feed)
         self.last_update_time[self.args.url] = feed.entries[-1].updated_parsed
+        self.last_updated_feed = self.args.url
         
     @multi_feed
     def _follow(self, feed):
@@ -109,7 +115,10 @@ class Wag(object):
         try:
             rendered_string = get_rendered_string(self.args.single_template, new_entries[pos:])
             if rendered_string != '':
-                print '\n---------- %s ----------\n' % feed.feed.get('title', self.args.url)
+                if self.last_updated_feed != self.args.url:
+                    print '\n---------- %s ----------\n' % feed.feed.get('title', self.args.url)
+                    self.last_updated_feed = self.args.url
+
                 print rendered_string
         except IndexError:
             pass

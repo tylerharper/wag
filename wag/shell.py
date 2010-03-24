@@ -24,6 +24,7 @@ parser.add_argument('-k', '--keys', action='store_true',
                          help="prints out the valid keys for that url/name")
 parser.add_argument('-l', '--list', action='store_true', help="lists all the valid names in your config file")
 parser.add_argument('-f', '--follow', action='store_true')
+parser.add_argument('--add', type=str, help="add the current url and template to config")
 parser.add_argument('names', metavar='name/url', default=None, nargs='*')
 
 
@@ -34,6 +35,7 @@ wag = Wag(args, feeds_object)
      
 opt_map = [
     ('list', wag.list),
+    ('add', wag.add),
     ('keys', wag.show_keys),
     ('follow', wag.follow),
     ]
