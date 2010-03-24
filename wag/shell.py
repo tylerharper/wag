@@ -20,13 +20,11 @@ parser.add_argument('-c', '--config', default=default_config,
 parser.add_argument('-s', '--sleep-interval', type=int, default=300, 
                     help='with -f, sleep for approximately N seconds (default 1.0) between iterations')
 parser.add_argument('-v', '--verbose', action='store_true')
-parser.add_argument('names', metavar='name/url', default=None, nargs='*')
-
 parser.add_argument('-k', '--keys', action='store_true',
                          help="prints out the valid keys for that url/name")
-                         
 parser.add_argument('-l', '--list', action='store_true', help="lists all the valid names in your config file")
 parser.add_argument('-f', '--follow', action='store_true')
+parser.add_argument('names', metavar='name/url', default=None, nargs='*')
 
 
 feeds_object = ConfigParser.RawConfigParser({'url': default_url, 'template': default_template})
