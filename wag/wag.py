@@ -86,8 +86,39 @@ class Wag(object):
         sys.exit()
 
     
-    def add(self):
-        pass
+    def update(self):
+        if len(self.args.names) > 1:
+            print 'wag: only one url per update'
+            sys.exit(1)
+
+        elif len(self.args.template) > 1:
+            print 'wag: only one template per update'
+            sys.exit(1)
+        
+        name = self.args.update_feeds
+
+        try:
+            self.feeds_object.add_section(name)
+        except ConfigParser.DuplicateSectionError:
+            pass
+    
+        if len(self.args.names) > 0:
+            self.feeds_object.set(name, 'url', self.args.names[0])
+        
+        if len(self.args.template) > 0:
+            self.feeds_object.set(name, 'template', self.args.template[0])
+        
+        #added everything just making sure its parsable
+        if self.feeds_object.has_option(name, 'url') == False:
+            print 'wag: configs must have a url'
+            sys.exit(1)
+
+        with open(self.args.config, 'wb') as configfile:
+            self.feeds_object.write(configfile)
+    
+        print 'wag: updated %s successfully' % self.args.update_feeds
+        sys.exit()
+            
 
     @multi_feed
     def _follow_first_display(self, feed):
