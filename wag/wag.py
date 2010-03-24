@@ -99,7 +99,7 @@ class Wag(object):
         
         pos = len(new_entries)
         for entry in new_entries:
-            if entry.updated_parsed > self.last_update_time(self.args.url):
+            if entry.updated_parsed > self.last_update_time[self.args.url]:
                 pos -= 1
             else:
                 break
@@ -113,7 +113,7 @@ class Wag(object):
         except IndexError:
             pass
         
-        last_entry = new_entries[-1]
+        self.last_update_time[self.args.url] = new_entries[-1].updated_parsed
 
     def follow(self):
         self._follow_first_display()
