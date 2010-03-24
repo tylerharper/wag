@@ -34,16 +34,16 @@ args = parser.parse_args()
 feeds_object.read(args.config)
 wag = Wag(args, feeds_object)
      
-opt_map = {
-    'list' : wag.list,
-    'keys' : wag.show_keys,
-    'follow' : wag.follow,
-    }
+opt_map = [
+    ('list', wag.list),
+    ('keys', wag.show_keys),
+    ('follow', wag.follow),
+    ]
 
 def main():
-    for opt in opt_map.keys():
+    for opt, func in opt_map:
         if getattr(args, opt):
-            opt_map[opt]()
+            func()
 
     wag.default()
 

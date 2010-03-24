@@ -44,6 +44,7 @@ class Wag(object):
     def __init__(self, args, feeds_object):
         self.args = args
         self.feeds_object = feeds_object
+        self.last_update_time = {}
 
     def display_feed(self, feed):
         """Takes a list of entries from config"""
@@ -84,35 +85,41 @@ class Wag(object):
         sys.exit()
 
     @multi_feed
+    def _follow_first_display(self, feed):
+        """
+        This function allows us to store the last entries update time.
+        Oh and it also displays the feed.
+        """
+        self.display_feed(feed)
+        self.last_update_time[self.args.url] = feed.entries[-1].updated_parsed
+        
+    @multi_feed
     def _follow(self, feed):
-        last_entry = feed.entries[-1]
-        while True:
-            time.sleep(self.args.sleep_interval)
-            
-            new_entries = feedparser.parse(self.args.url).entries
-            
-            pos = len(new_entries)
-            for entry in new_entries:
-                if entry.updated_parsed > last_entry.updated_parsed:
-                    pos -= 1
-                else:
-                    break
+        new_entries = feedparser.parse(self.args.url).entries
+        
+        pos = len(new_entries)
+        for entry in new_entries:
+            if entry.updated_parsed > self.last_update_time(self.args.url):
+                pos -= 1
+            else:
+                break
 
-            new_entries.reverse()
-            
-            try:
-                rendered_string = get_rendered_string(self.args.single_template, new_entries[pos:])
-                if rendered_string != '':
-                    print rendered_string
-            except IndexError:
-                pass
-            
-            last_entry = new_entries[-1]
+        new_entries.reverse()
+        
+        try:
+            rendered_string = get_rendered_string(self.args.single_template, new_entries[pos:])
+            if rendered_string != '':
+                print rendered_string
+        except IndexError:
+            pass
+        
+        last_entry = new_entries[-1]
 
     def follow(self):
-        self.default()
+        self._follow_first_display()
         try:
             while True:
+                time.sleep(self.args.sleep_interval)
                 self._follow()
         except KeyboardInterrupt:
             sys.exit()
