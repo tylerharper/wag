@@ -109,6 +109,7 @@ class Wag(object):
         try:
             rendered_string = get_rendered_string(self.args.single_template, new_entries[pos:])
             if rendered_string != '':
+                print '\n---------- %s ----------\n' % feed.feed.get('title', self.args.url)
                 print rendered_string
         except IndexError:
             pass
