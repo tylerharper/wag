@@ -49,7 +49,9 @@ class Wag(object):
 
     def display_feed(self, feed):
         """Takes a list of entries from config"""
-        print '\n---------- %s ----------\n' % feed.feed.get('title', self.args.url)
+        if len(self.args.names) > 1: # print title if more than one feed specified
+            print '\n---------- %s ----------' % feed.feed.get('title', self.args.url)
+
         number_of_entries = len(feed.entries)
         if number_of_entries == 0:
             print "There are zero feeds at %s" % (self.args.url)
@@ -156,7 +158,7 @@ class Wag(object):
             rendered_string = get_rendered_string(self.args.single_template, new_entries[pos:])
             if rendered_string != '':
                 if self.last_updated_feed != self.args.url:
-                    print '\n---------- %s ----------\n' % feed.feed.get('title', self.args.url)
+                    print '\n---------- %s ----------' % feed.feed.get('title', self.args.url)
                     self.last_updated_feed = self.args.url
 
                 print rendered_string
