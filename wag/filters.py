@@ -48,23 +48,26 @@ def relatize(value):
 #This could possibly go into a colors.py file
 ansi_colors = {
                 'bold': '1',
-                'black': '1;30',
-                'red': '1;31',
-                'green': '1;32',
-                'yellow': '1;33',
-                'blue': '1;34',
-                'magenta': '1;35',
-                'cyan': '1;36',
-                'white': '1;37',
+                'black': '30',
+                'red': '31',
+                'green': '32',
+                'yellow': '33',
+                'blue': '34',
+                'magenta': '35',
+                'cyan': '36',
+                'white': '37',
               }
 
-def color_func(ansi_color):
-    """This is used to fix the know closure problem"""
-    color_str = "\033[%sm" % ansi_color
+def color_func(ansi_color, bold=False):
+    """This is used to fix the known closure problem"""
+    color_str = "\033[%s;%sm" % (int(bold), ansi_color)
     return lambda value: color_str + value + "\033[1;m"
 
 for color in ansi_colors:
     jinja_env.filters[color] = color_func(ansi_colors[color])
+    
+    if color != "bold": # thanks to sir rson
+        jinja_env.filters["bold" + color] = color_func(ansi_colors[color], bold=True) 
                 
 jinja_env.filters['html2markdown'] = html_to_markdown
 jinja_env.filters['relatize'] = relatize

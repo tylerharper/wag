@@ -18,7 +18,7 @@ parser.add_argument('-t', '--template', default=[], nargs='+',
 parser.add_argument('-c', '--config', default=default_config,
                     help="Use a new config file. (default: %s)" % default_config)
 parser.add_argument('-s', '--sleep-interval', type=int, default=300, 
-                    help='with -f, sleep for approximately N seconds (default 1.0) between iterations')
+                    help='with -f, sleep for approximately N seconds (default 300) between iterations')
 parser.add_argument('-v', '--verbose', action='store_true')
 parser.add_argument('-k', '--keys', action='store_true',
                          help="prints out the valid keys for that url/name")
