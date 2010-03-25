@@ -10,12 +10,12 @@ jinja_env = Environment(loader=FileSystemLoader(['.',template_path, default_temp
 
 def render_single_entry(template_name, entry):
     template = jinja_env.get_template(template_name)
-    return template.render(**entry)
+    return template.render(**entry).encode('ascii', 'xmlcharrefreplace')
 
 def get_rendered_string(template_name, entries):
     string = ''
     for e in entries:
         string += render_single_entry(template_name, e)
 
-    return string[:-1] # removing the newline
+    return string[:-1].encode('ascii', 'xmlcharrefreplace')# removing the newline
 

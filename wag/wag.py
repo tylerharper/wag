@@ -60,6 +60,8 @@ class Wag(object):
         except TemplateNotFound:
             print "%s does not appear to be a valid template in your template path" % self.args.single_template
             sys.exit(1)
+        except IOError:
+            pass
         #except AttributeError:
         #    print "Either invalid url or invalid name"
 
