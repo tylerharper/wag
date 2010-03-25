@@ -86,6 +86,13 @@ class Wag(object):
         sys.exit()
 
     
+    def all(self):
+        self.args.names = self.feeds_object.sections()
+
+    def exclude(self):
+        new_names = set(self.args.names).difference(self.args.exclude)
+        self.args.names = list(new_names)
+    
     def update(self):
         if len(self.args.names) > 1:
             print 'wag: only one url per update'

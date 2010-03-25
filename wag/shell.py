@@ -25,6 +25,8 @@ parser.add_argument('-k', '--keys', action='store_true',
 parser.add_argument('-l', '--list', action='store_true', help="lists all the valid names in your config file")
 parser.add_argument('-f', '--follow', action='store_true')
 parser.add_argument('-u', '--update-feeds', type=str, help="add the current url and template to config")
+parser.add_argument('--all', action='store_true', help="displays all of your feeds in your feeds file")
+parser.add_argument('-e', '--exclude', default=[] ,nargs='+', help="exclude the certain feeds when you display all")
 parser.add_argument('names', metavar='name/url', default=None, nargs='*')
 
 
@@ -33,10 +35,13 @@ args = parser.parse_args()
 feeds_object.read(args.config)
 wag = Wag(args, feeds_object)
      
+# order matters here
 opt_map = [
     ('list', wag.list),
     ('update_feeds', wag.update),
     ('keys', wag.show_keys),
+    ('all', wag.all),
+    ('exclude', wag.exclude),
     ('follow', wag.follow),
     ]
 
