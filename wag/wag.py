@@ -4,6 +4,7 @@ import time
 import os
 import ConfigParser
 import filters
+import urlparse
 from templates import get_rendered_string, TemplateNotFound
 from itertools import izip_longest, izip
 
@@ -28,8 +29,15 @@ def multi_feed(func):
 
             self.args.single_template = arg_template
             
+            
+            parsed_url = urlparse.urlparse(url)
+            # add http:// if url is reddit.com instead of http://reddit.com
+            # url parse messes up sometimes so I need to specfiy
+            # also urllib2 in feedparser only supports http, https, ftp, ftps
+            if parsed_url.scheme.lower() not in ['http', 'https', 'ftp', 'ftps']:
+                url = 'http://' + url
+
             self.args.url = url
-             
             feed = feedparser.parse(url)
             feed.entries.reverse()
             
@@ -46,6 +54,9 @@ class Wag(object):
         self.feeds_object = feeds_object
         self.last_update_time = {}
         self.last_updated_feed = ''
+
+    def _fix_url(self):
+        """Fixes mangled urls"""
 
     def display_feed(self, feed):
         """Takes a list of entries from config"""
@@ -74,11 +85,11 @@ class Wag(object):
     @multi_feed
     def show_keys(self, feed):
 
-        for k in feed.entries[0]:
+        for k in feed.entries[-1]:
             key_str = "'%s'" % str(k)
             #this was stolen from rson
             if self.args.verbose is True:
-                key_str += " => '%s'" % feed.entries[0][k]
+                key_str += " => '%s'" % feed.entries[-1][k]
         
             print key_str
 

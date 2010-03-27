@@ -7,6 +7,9 @@ import os
 default_config = os.environ['HOME'] + '/.wag/feeds'
 default_template = 'default_rss_template'
 default_url = None
+feed_defaults = {
+                 'template': default_template, 
+                }
 
 parser = argparse.ArgumentParser(prog="wag", 
                         description="tail rss/atom feeds")
@@ -30,7 +33,8 @@ parser.add_argument('-e', '--exclude', default=[] ,nargs='+', help="exclude the 
 parser.add_argument('names', metavar='name/url', default=None, nargs='*')
 
 
-feeds_object = ConfigParser.RawConfigParser({'template': default_template})
+
+feeds_object = ConfigParser.RawConfigParser(feed_defaults)
 args = parser.parse_args()
 feeds_object.read(args.config)
 wag = Wag(args, feeds_object)
