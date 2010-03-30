@@ -3,12 +3,14 @@ import ConfigParser
 import argparse
 from wag import Wag
 import os
+import sys
 
 default_config = os.environ['HOME'] + '/.wag/feeds'
 default_template = 'default_rss_template'
 default_url = None
 feed_defaults = {
                  'template': default_template, 
+                 'title': '',
                 }
 
 parser = argparse.ArgumentParser(prog="wag", 
@@ -31,7 +33,7 @@ parser.add_argument('-u', '--update-feeds', type=str, help="add the current url 
 parser.add_argument('--all', action='store_true', help="displays all of your feeds in your feeds file")
 parser.add_argument('-e', '--exclude', default=[] ,nargs='+', help="exclude the certain feeds when you display all")
 parser.add_argument('names', metavar='name/url', default=None, nargs='*')
-
+parser.add_argument('--title', type=str, help="a descriptive title for your feeds")
 
 
 feeds_object = ConfigParser.RawConfigParser(feed_defaults)

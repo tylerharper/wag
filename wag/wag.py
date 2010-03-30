@@ -11,6 +11,10 @@ from itertools import izip_longest, izip
 
 def multi_feed(func):
     def pseudo_object(self):
+        if not sys.stdin.isatty():
+            stdin_lines = sys.stdin.read().split('\n')
+            self.args.names.extend(stdin_lines[:-1]) # remove last newline
+
         if len(self.args.names) > len(self.args.template):
             iterable_args = izip_longest(self.args.names, self.args.template)
         else:
@@ -21,6 +25,7 @@ def multi_feed(func):
                 url = self.feeds_object.get(name, 'url')
                 template = self.feeds_object.get(name, 'template')
             except ConfigParser.NoSectionError:
+                print 'url %s dne' % name
                 url = name
                 template = 'default_rss_template'
             
@@ -66,7 +71,6 @@ class Wag(object):
         number_of_entries = len(feed.entries)
         if number_of_entries == 0:
             print "There are zero feeds at %s" % (self.args.url)
-            sys.exit(1)
 
         try:
             print get_rendered_string(self.args.single_template, feed.entries[number_of_entries-self.args.lines:])
@@ -97,7 +101,14 @@ class Wag(object):
     
     def list(self):
         for section in self.feeds_object.sections():
-            print "'" + section + "'"
+            section_string = section
+            if self.args.verbose:
+                section_string = "'" + section_string + "'"
+                title = self.feeds_object.get(section, 'title')
+                if title:
+                    section_string += " => \"" + str(title) + "\""
+
+            print section_string
         sys.exit()
 
     
@@ -129,6 +140,9 @@ class Wag(object):
         
         if len(self.args.template) > 0:
             self.feeds_object.set(name, 'template', self.args.template[0])
+
+        if self.args.title is not None:
+            self.feeds_object.set(name, 'title', self.args.title)
         
         #added everything just making sure its parsable
         if self.feeds_object.has_option(name, 'url') == False:
