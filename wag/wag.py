@@ -5,10 +5,23 @@ import os
 import ConfigParser
 import filters
 import urlparse
+from datetime import datetime
 from templates import get_rendered_string, TemplateNotFound
 from itertools import izip_longest, izip
 
 
+def sort_function(e1, e2):
+    entry1_time = e1.updated_parsed
+    entry2_time = e2.updated_parsed
+    diff = datetime(*entry1_time[:6]) - datetime(*entry2_time[:6])
+    if diff.seconds > 0 or diff.days > 0:
+        return -1
+    elif diff.seconds == 0 and diff.days == 0:
+        return 0
+    elif diff.seconds < 0 or diff.days < 0:
+        return 1
+        
+    
 def multi_feed(func):
     def pseudo_object(self):
         if not sys.stdin.isatty():
@@ -25,7 +38,6 @@ def multi_feed(func):
                 url = self.feeds_object.get(name, 'url')
                 template = self.feeds_object.get(name, 'template')
             except ConfigParser.NoSectionError:
-                print 'url %s dne' % name
                 url = name
                 template = 'default_rss_template'
             
@@ -163,24 +175,30 @@ class Wag(object):
         Oh and it also displays the feed.
         """
         self.display_feed(feed)
-        self.last_update_time[self.args.url] = feed.entries[-1].updated_parsed
+        
+        latest_update = feed.entries[0].updated_parsed
+        for entry in feed.entries[1:]:
+            if latest_update < entry.updated_parsed:
+                latest_update = entry.updated_parsed
+
+        self.last_update_time[self.args.url] = latest_update
         self.last_updated_feed = self.args.url
         
     @multi_feed
     def _follow(self, feed):
-        new_entries = feedparser.parse(self.args.url).entries
+        feed_entries = feedparser.parse(self.args.url).entries
         
-        pos = len(new_entries)
-        for entry in new_entries:
+        pos = len(feed_entries)
+        
+        new_entries = []
+        for entry in feed_entries:
             if entry.updated_parsed > self.last_update_time[self.args.url]:
-                pos -= 1
-            else:
-                break
+                new_entries.append(entry)
 
-        new_entries.reverse()
+        new_entries = sorted(new_entries, sort_function)
         
         try:
-            rendered_string = get_rendered_string(self.args.single_template, new_entries[pos:])
+            rendered_string = get_rendered_string(self.args.single_template, new_entries)
             if rendered_string != '':
                 if self.last_updated_feed != self.args.url:
                     print '\n---------- %s ----------' % feed.feed.get('title', self.args.url)
@@ -190,7 +208,8 @@ class Wag(object):
         except IndexError:
             pass
         
-        self.last_update_time[self.args.url] = new_entries[-1].updated_parsed
+        if len(new_entries) > 0:
+            self.last_update_time[self.args.url] = new_entries[-1].updated_parsed
 
     def follow(self):
         self._follow_first_display()
@@ -201,7 +220,7 @@ class Wag(object):
         except KeyboardInterrupt:
             sys.exit()
 
-        except IndexError:
-            print "%s has no entries or is an invalid url" % self.args.url
-            sys.exit(1)
+        #except IndexError:
+        #    print "%s has no entries or is an invalid url" % self.args.url
+        #    sys.exit(1)
 
