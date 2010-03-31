@@ -188,8 +188,6 @@ class Wag(object):
     def _follow(self, feed):
         feed_entries = feedparser.parse(self.args.url).entries
         
-        pos = len(feed_entries)
-        
         new_entries = []
         for entry in feed_entries:
             if entry.updated_parsed > self.last_update_time[self.args.url]:
@@ -210,6 +208,7 @@ class Wag(object):
         
         if len(new_entries) > 0:
             self.last_update_time[self.args.url] = new_entries[-1].updated_parsed
+        
 
     def follow(self):
         self._follow_first_display()
@@ -219,8 +218,4 @@ class Wag(object):
                 self._follow()
         except KeyboardInterrupt:
             sys.exit()
-
-        #except IndexError:
-        #    print "%s has no entries or is an invalid url" % self.args.url
-        #    sys.exit(1)
 
