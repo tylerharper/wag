@@ -58,10 +58,6 @@ def multi_feed(func):
             feed = feedparser.parse(url)
             feed.entries.reverse()
             
-            #fixing line numbers
-            if self.args.lines is None:
-                self.args.lines = len(feed.entries)
-            
             func(self, feed)
     return pseudo_object
             
@@ -72,20 +68,21 @@ class Wag(object):
         self.last_update_time = {}
         self.last_updated_feed = ''
 
-    def _fix_url(self):
-        """Fixes mangled urls"""
-
     def display_feed(self, feed):
         """Takes a list of entries from config"""
         if len(self.args.names) > 1: # print title if more than one feed specified
             print '\n---------- %s ----------' % feed.feed.get('title', self.args.url)
 
         number_of_entries = len(feed.entries)
-        if number_of_entries == 0:
-            print "There are zero feeds at %s" % (self.args.url)
+        if number_of_entries <= 0:
+            print "There are no feeds at %s" % (self.args.url)
+        elif self.args.lines is None:
+            number_of_entries = 0
+        else: # if greater than 0 and lines is not None
+            number_of_entries = number_of_entries - self.args.lines
 
         try:
-            print get_rendered_string(self.args.single_template, feed.entries[number_of_entries-self.args.lines:])
+            print get_rendered_string(self.args.single_template, feed.entries[number_of_entries:])
         except TemplateNotFound:
             print "%s does not appear to be a valid template in your template path" % self.args.single_template
             sys.exit(1)
@@ -176,7 +173,11 @@ class Wag(object):
         """
         self.display_feed(feed)
         
-        latest_update = feed.entries[0].updated_parsed
+        try:
+            latest_update = feed.entries[0].updated_parsed
+        except IndexError:
+            latest_update = datetime.utcnow().timetuple()
+            
         for entry in feed.entries[1:]:
             if latest_update < entry.updated_parsed:
                 latest_update = entry.updated_parsed
