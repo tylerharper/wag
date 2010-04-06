@@ -123,6 +123,8 @@ class Wag(object):
     
     def all(self):
         self.args.names = self.feeds_object.sections()
+        if len(self.args.template) == 1:
+            self.args.template = [self.args.template[0] for t in range(len(self.args.names))]
 
     def exclude(self):
         new_names = set(self.args.names).difference(self.args.exclude)
