@@ -38,7 +38,7 @@ def relatize(value):
     elif time_difference.days > 60:
         return 'about %d months ago' % (time_difference.days / 30)
     elif time_difference.days > 30:
-        return 'about a month ago' % (time_difference.days / 30)
+        return 'about a month ago'
     elif time_difference.days > 1:
         return 'about %d days ago' % time_difference.days
     elif time_difference.days > 0:
