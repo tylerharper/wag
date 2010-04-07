@@ -2,6 +2,7 @@ from templates import jinja_env
 from datetime import datetime, timedelta
 from feedparser import _parse_date
 import html2text
+import time
 
 def html_to_markdown(value, width=70):
     html2text.BODY_WIDTH = width
@@ -25,11 +26,19 @@ def relatize(value):
     the_date = datetime(*date_struct)
     
     now = datetime.utcnow()
+    if time.daylight:
+        now = now + timedelta(hours=1)
 
     time_difference = now - the_date
+    if time_difference.days < 0:
+        return 'sometime in the near future' # just in case the time screws up
     
     if time_difference.days > 356:
         return 'about %d years ago' % (time_difference.days / 356)
+    elif time_difference.days > 60:
+        return 'about %d months ago' % (time_difference.days / 30)
+    elif time_difference.days > 30:
+        return 'about a month ago' % (time_difference.days / 30)
     elif time_difference.days > 1:
         return 'about %d days ago' % time_difference.days
     elif time_difference.days > 0:
@@ -42,8 +51,9 @@ def relatize(value):
         return 'about %d minutes ago' % (time_difference.seconds / 60)
     elif time_difference.seconds > 60:
         return 'about a minute ago'
-    elif time_difference.seconds < 60:
+    elif time_difference.seconds < 60 or time_difference.days < 1:
         return 'just now'
+    
     
 #This could possibly go into a colors.py file
 ansi_colors = {
