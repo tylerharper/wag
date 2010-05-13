@@ -73,6 +73,9 @@ class Wag(object):
         if len(self.args.names) > 1: # print title if more than one feed specified
             print '\n---------- %s ----------' % feed.feed.get('title', self.args.url)
 
+        if self.args.after:
+            feed.entries = self._remove_entries_after(feed.entries)
+        
         number_of_entries = len(feed.entries)
         if number_of_entries <= 0:
             print "There are no feeds at %s" % (self.args.url)
@@ -107,6 +110,27 @@ class Wag(object):
             print key_str
 
         sys.exit()
+    
+    def _remove_entries_after(self, entries):
+        new_entries = []
+        for entry in entries:
+            entry_time = datetime(*entry.updated_parsed[:6])
+            if entry_time > self.args.after:
+                new_entries.append(entry)
+
+        return new_entries
+
+    def after(self):
+        if self.args.after.count('-') == 1:
+            self.args.after += '-%d' % datetime.utcnow().year
+            
+        try:
+            new_after = datetime.strptime(self.args.after, '%m-%d-%Y')
+        except ValueError:
+            print 'string format is MM-DD[-YYYY]'
+            sys.exit(-1)
+        
+        self.args.after = new_after
     
     def list(self):
         for section in self.feeds_object.sections():
@@ -214,6 +238,7 @@ class Wag(object):
         
 
     def follow(self):
+        filters.jinja_env.filters['relatize'] = lambda x: x
         self._follow_first_display()
         try:
             while True:

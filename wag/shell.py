@@ -33,6 +33,7 @@ parser.add_argument('-u', '--update-feeds', type=str, help="add the current url 
 parser.add_argument('--all', action='store_true', help="displays all of your feeds in your feeds file")
 parser.add_argument('-e', '--exclude', default=[] ,nargs='+', help="exclude the certain feeds when you display all")
 parser.add_argument('names', metavar='name/url', default=None, nargs='*')
+parser.add_argument('--after', type=str, default=None, help="Display entries the were posted after a certain date format is MM-DD[-YYYY]")
 parser.add_argument('--title', type=str, help="a descriptive title for your feeds")
 
 
@@ -45,6 +46,7 @@ wag = Wag(args, feeds_object)
 opt_map = [
     ('list', wag.list),
     ('update_feeds', wag.update),
+    ('after', wag.after),
     ('keys', wag.show_keys),
     ('all', wag.all),
     ('exclude', wag.exclude),
