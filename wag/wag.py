@@ -6,6 +6,7 @@ import ConfigParser
 import filters
 import urlparse
 from datetime import datetime
+from datetime import timedelta
 from templates import get_rendered_string, TemplateNotFound
 from itertools import izip_longest, izip
 
@@ -115,7 +116,7 @@ class Wag(object):
         new_entries = []
         for entry in entries:
             entry_time = datetime(*entry.updated_parsed[:6])
-            if entry_time > self.args.after:
+            if entry_time >= self.args.after:
                 new_entries.append(entry)
 
         return new_entries
@@ -130,7 +131,7 @@ class Wag(object):
             print 'string format is MM-DD[-YYYY]'
             sys.exit(-1)
         
-        self.args.after = new_after
+        self.args.after = new_after + timedelta(1) # add on a day so after is not inclusive
     
     def list(self):
         for section in self.feeds_object.sections():
