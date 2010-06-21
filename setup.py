@@ -1,24 +1,20 @@
-from distribute_setup import use_setuptools; use_setuptools()
 from setuptools import setup, find_packages
-
-
-
 
 setup(
     name='wag',
-    version='0.3',
+    version="0.4",
     description="Tail your rss and atom feeds",
     long_description="Make your tail happy, wag it!",
-    url='http://github.com/knobe/wag',
-    license='BSD',
     author="Tyler Harper",
-    author_email="tyler@cowboycoding.org",
-    packages= find_packages(exclude=['distribute_setup']),
+    author_email="tyler.a.harper@gmail.com",
+    url='http://github.com/knobe/wag/tree/master',
+    packages=find_packages(),
+    include_package_data = True,
+    zip_safe=False,
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Environment :: Console',
         'Intended Audience :: Developers',
-        'Operating System :: OS Independent',
         'License :: OSI Approved :: BSD License',
         'Programming Language :: Python',
     ],
@@ -27,3 +23,4 @@ setup(
         'console_scripts': ['wag = wag.shell:main'],
     },
 )
+
